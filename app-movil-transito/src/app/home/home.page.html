@@ -1,20 +1,38 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+<ion-header>
+  
+  
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Noticias de Tránsito</ion-title>
   </ion-toolbar>
+
+  <!-- Menú de pestañas -->
+  <ion-segment [(ngModel)]="selectedSegment" color="tertiary">
+    <ion-segment-button value="todo">
+      Todo
+    </ion-segment-button>
+    <ion-segment-button value="noticias">
+      Noticias
+    </ion-segment-button>
+    <ion-segment-button value="blog">
+      Blog
+    </ion-segment-button>
+  </ion-segment>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+<ion-content>
+  <!-- Lista de noticias filtradas -->
+  <ion-list *ngFor="let item of getFilteredNoticias()">
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <img [src]="item.imagen" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ item.titulo }}</h2>
+        <p>{{ item.fecha | date:'dd/MM/yyyy' }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
