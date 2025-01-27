@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Iniciar Sesión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Bienvenido</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-input placeholder="Correo electrónico" type="email" [(ngModel)]="email" clearInput></ion-input>
+        <ion-input placeholder="Contraseña" type="password" [(ngModel)]="password" clearInput></ion-input>
+        
+        <ion-button expand="full" (click)="login()">Iniciar sesión</ion-button>
+        
+        <ion-text color="primary" class="forgot-password">
+          <a href="#">¿Olvidaste tu contraseña?</a>
+       
