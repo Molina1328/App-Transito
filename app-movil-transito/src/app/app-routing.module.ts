@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' }, // Cambiado de 'home' a 'login'
   { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomePageModule) },
   {
     path: 'codigo-transito',
@@ -27,7 +27,8 @@ const routes: Routes = [
   {
     path: 'configuracion',
     loadChildren: () => import('./configuracion/configuracion.module').then( m => m.ConfiguracionPageModule)
-  },  {
+  },
+  {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },

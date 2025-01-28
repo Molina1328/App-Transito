@@ -14,8 +14,13 @@
         <ion-input placeholder="Correo electrónico" type="email" [(ngModel)]="email" clearInput></ion-input>
         <ion-input placeholder="Contraseña" type="password" [(ngModel)]="password" clearInput></ion-input>
         
-        <ion-button expand="full" (click)="login()">Iniciar sesión</ion-button>
+        <ion-button expand="full" (click)="login()">Iniciar Sesión</ion-button>
         
-        <ion-text color="primary" class="forgot-password">
-          <a href="#">¿Olvidaste tu contraseña?</a>
-       
+        <!-- Botón para redirigir a Crear Cuenta -->
+        <ion-button expand="full" fill="outline" color="secondary" routerLink="/create-account">
+          Crear Cuenta
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

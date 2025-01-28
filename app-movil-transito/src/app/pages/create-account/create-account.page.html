@@ -11,12 +11,44 @@
         <ion-card-title>Registro</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-input placeholder="Correo electrónico" type="email" [(ngModel)]="email" clearInput></ion-input>
-        <ion-input placeholder="Contraseña" type="password" [(ngModel)]="password" clearInput></ion-input>
-        <ion-input placeholder="Confirmar contraseña" type="password" [(ngModel)]="confirmPassword" clearInput></ion-input>
-        
-        <ion-button expand="full" (click)="createAccount()">Crear cuenta</ion-button>
-        
+        <!-- Campo para Username -->
+        <ion-input 
+          placeholder="Nombre de usuario" 
+          type="text" 
+          [(ngModel)]="username" 
+          clearInput>
+        </ion-input>
+
+        <!-- Campo para Correo -->
+        <ion-input 
+          placeholder="Correo electrónico" 
+          type="email" 
+          [(ngModel)]="email" 
+          clearInput>
+        </ion-input>
+
+        <!-- Campo para Contraseña -->
+        <ion-input 
+          placeholder="Contraseña" 
+          type="password" 
+          [(ngModel)]="password" 
+          clearInput>
+        </ion-input>
+
+        <!-- Campo para Confirmar Contraseña -->
+        <ion-input 
+          placeholder="Confirmar contraseña" 
+          type="password" 
+          [(ngModel)]="confirmPassword" 
+          clearInput>
+        </ion-input>
+
+        <!-- Botón para Crear Cuenta -->
+        <ion-button expand="full" (click)="createAccount()">
+          Crear cuenta
+        </ion-button>
+
+        <!-- Enlace para Redirigir al Login -->
         <ion-text color="primary" class="go-to-login">
           <a routerLink="/login">¿Ya tienes una cuenta? Iniciar sesión</a>
         </ion-text>
