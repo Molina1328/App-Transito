@@ -1,5 +1,8 @@
 <ion-header>
   <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
     <ion-title>Crear Cuenta</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,49 +12,71 @@
     <ion-card>
       <ion-card-header>
         <ion-card-title>Registro</ion-card-title>
+        <ion-card-subtitle>Complete todos los campos para crear su cuenta</ion-card-subtitle>
       </ion-card-header>
+
       <ion-card-content>
-        <!-- Campo para Username -->
-        <ion-input 
-          placeholder="Nombre de usuario" 
-          type="text" 
-          [(ngModel)]="username" 
-          clearInput>
-        </ion-input>
+        <form (ngSubmit)="createAccount()">
+          <ion-item>
+            <ion-label position="floating">Nombre de usuario</ion-label>
+            <ion-input 
+              type="text" 
+              [(ngModel)]="username" 
+              name="username"
+              required
+              clearInput>
+            </ion-input>
+          </ion-item>
 
-        <!-- Campo para Correo -->
-        <ion-input 
-          placeholder="Correo electrónico" 
-          type="email" 
-          [(ngModel)]="email" 
-          clearInput>
-        </ion-input>
+          <ion-item>
+            <ion-label position="floating">Correo electrónico</ion-label>
+            <ion-input 
+              type="email" 
+              [(ngModel)]="email" 
+              name="email"
+              required
+              clearInput>
+            </ion-input>
+          </ion-item>
 
-        <!-- Campo para Contraseña -->
-        <ion-input 
-          placeholder="Contraseña" 
-          type="password" 
-          [(ngModel)]="password" 
-          clearInput>
-        </ion-input>
+          <ion-item>
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input 
+              type="password" 
+              [(ngModel)]="password" 
+              name="password"
+              required
+              clearInput>
+            </ion-input>
+          </ion-item>
 
-        <!-- Campo para Confirmar Contraseña -->
-        <ion-input 
-          placeholder="Confirmar contraseña" 
-          type="password" 
-          [(ngModel)]="confirmPassword" 
-          clearInput>
-        </ion-input>
+          <ion-item>
+            <ion-label position="floating">Confirmar contraseña</ion-label>
+            <ion-input 
+              type="password" 
+              [(ngModel)]="confirmPassword" 
+              name="confirmPassword"
+              required
+              clearInput>
+            </ion-input>
+          </ion-item>
 
-        <!-- Botón para Crear Cuenta -->
-        <ion-button expand="full" (click)="createAccount()">
-          Crear cuenta
-        </ion-button>
+          <div class="ion-padding">
+            <ion-button 
+              expand="block" 
+              type="submit" 
+              [disabled]="loading">
+              <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+              <span *ngIf="!loading">Crear cuenta</span>
+            </ion-button>
+          </div>
+        </form>
 
-        <!-- Enlace para Redirigir al Login -->
-        <ion-text color="primary" class="go-to-login">
-          <a routerLink="/login">¿Ya tienes una cuenta? Iniciar sesión</a>
-        </ion-text>
+        <div class="ion-text-center ion-padding-top">
+          <ion-text color="primary">
+            <a routerLink="/login">¿Ya tienes una cuenta? Iniciar sesión</a>
+          </ion-text>
+        </div>
       </ion-card-content>
     </ion-card>
   </div>
