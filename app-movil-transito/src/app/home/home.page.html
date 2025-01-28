@@ -1,37 +1,36 @@
 <ion-header>
-  
-  
   <ion-toolbar color="primary">
+    <ion-title>Home</ion-title>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Noticias de Tránsito</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="createNews()">
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
-
-  <!-- Menú de pestañas -->
-  <ion-segment [(ngModel)]="selectedSegment" color="tertiary">
-    <ion-segment-button value="todo">
-      Todo
-    </ion-segment-button>
-    <ion-segment-button value="noticias">
-      Noticias
-    </ion-segment-button>
-    <ion-segment-button value="blog">
-      Blog
-    </ion-segment-button>
-  </ion-segment>
 </ion-header>
 
 <ion-content>
-  <!-- Lista de noticias filtradas -->
-  <ion-list *ngFor="let item of getFilteredNoticias()">
-    <ion-item>
+  <ion-segment [(ngModel)]="selectedSegment">
+    <ion-segment-button value="todo">
+      <ion-label>Todo</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="noticias">
+      <ion-label>Noticias</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-list>
+    <ion-item *ngFor="let noticia of noticias">
       <ion-thumbnail slot="start">
-        <img [src]="item.imagen" />
+       <!--<img [src]="noticia.imageUrl">-->
       </ion-thumbnail>
       <ion-label>
-        <h2>{{ item.titulo }}</h2>
-        <p>{{ item.fecha | date:'dd/MM/yyyy' }}</p>
+        <h2>{{ noticia.title }}</h2>
+        <p>{{ noticia.date.toDate() | date }}</p>
+        <p>{{ noticia.content }}</p>
       </ion-label>
     </ion-item>
   </ion-list>

@@ -21,6 +21,7 @@ export class LoginPage {
     // Aquí va la lógica para el inicio de sesión
     try {
       await this.authService.login(this.email, this.password);
+      console.log('getLoggedInUser', this.authService.getLoggedInUser());
       this.navCtrl.navigateRoot('/home'); // Navegar a la página principal
     } catch (error) {
       const alert = await this.alertController.create({

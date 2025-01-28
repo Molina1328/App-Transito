@@ -1,55 +1,106 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { Firestore, collection, getDocs } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-
+export class HomePage implements OnInit {
   selectedSegment: string = 'todo';
+  noticias: any[] = [];
 
-  noticias = [
-    {
-      titulo: 'Nuevas señales de tránsito en Ecuador',
-      fecha: new Date('2024-10-04'),
-      imagen: 'assets/images/senal-transito.png',
-      categoria: 'noticias'
-    },
-    {
-      titulo: 'Mejoras en la aplicación',
-      fecha: new Date('2024-07-23'),
-      imagen: 'assets/images/mejoras-app.png',
-      categoria: 'noticias'
-    },
-    {
-      titulo: '¿Ya pagaste tu impuesto vehicular? Estos vehículos deben pagarlo',
-      fecha: new Date('2024-04-27'),
-      imagen: 'assets/images/impuesto-vehicular.png',
-      categoria: 'blog'
-    },
-    {
-      titulo: 'Multa por no portar el "kit de carreteras" en moto?',
-      fecha: new Date('2024-04-06'),
-      imagen: 'assets/images/kit-carreteras.png',
-      categoria: 'blog'
-    },
-    {
-      titulo: 'Distancia de seguridad entre vehículos',
-      fecha: new Date('2024-03-16'),
-      imagen: 'assets/images/distancia-seguridad.png',
-      categoria: 'blog'
-    },
-    // Agrega más noticias con sus categorías respectivas
-  ];
+  constructor(
+    private authService: AuthService,
+    private alertController: AlertController,
+    private loadingController: LoadingController,
+    private firestore: Firestore
+  ) {}
 
-  constructor() {}
+  ngOnInit() {
+    this.loadNews();
+  }
 
-  // Método para filtrar noticias por categoría
-  getFilteredNoticias() {
-    if (this.selectedSegment === 'todo') {
-      return this.noticias;
+  async loadNews() {
+    const loading = await this.loadingController.create({
+      message: 'Cargando noticias...'
+    });
+    await loading.present();
+
+    try {
+      const newsCollection = collection(this.firestore, '1234');
+      const newsSnapshot = await getDocs(newsCollection);
+      this.noticias = newsSnapshot.docs.map(doc => doc.data());
+      await loading.dismiss();
+    } catch (error) {
+      await loading.dismiss();
+      const errorAlert = await this.alertController.create({
+        header: 'Error',
+        message: 'Hubo un error al cargar las noticias',
+        buttons: ['OK']
+      });
+      await errorAlert.present();
     }
-    return this.noticias.filter(item => item.categoria === this.selectedSegment);
+  }
+
+  async createNews() {
+    const alert = await this.alertController.create({
+      header: 'Crear Noticia',
+      inputs: [
+        {
+          name: 'title',
+          type: 'text',
+          placeholder: 'Título'
+        },
+        {
+          name: 'content',
+          type: 'textarea',
+          placeholder: 'Contenido'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Crear',
+          handler: async (data) => {
+            const loading = await this.loadingController.create({
+              message: 'Creando noticia...'
+            });
+            await loading.present();
+
+            try {
+              await this.authService.createNews({
+                title: data.title,
+                content: data.content,
+                date: new Date()
+              });
+              await loading.dismiss();
+              const successAlert = await this.alertController.create({
+                header: 'Éxito',
+                message: 'Noticia creada correctamente',
+                buttons: ['OK']
+              });
+              await successAlert.present();
+              this.loadNews(); // Recargar las noticias después de crear una nueva
+            } catch (error) {
+              await loading.dismiss();
+              const errorAlert = await this.alertController.create({
+                header: 'Error',
+                message: 'Hubo un error al crear la noticia',
+                buttons: ['OK']
+              });
+              await errorAlert.present();
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }
