@@ -1,6 +1,4 @@
 <ion-header>
-  
-  
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -9,6 +7,26 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
+
+  <ion-list>
+    <ion-item *ngFor="let senal of senales">
+      <ion-label>
+        <h2>{{ senal.title }}</h2>
+        <p>{{ senal.date ? (senal.date.toDate() | date) : 'Fecha no disponible' }}</p>
+        <p>{{ senal.content }}</p>
+      </ion-label>
+      <ion-button color="danger" (click)="eliminarSenal(senal)">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <!-- Botón flotante para agregar más entidades -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="success" (click)="agregarSenal()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 </ion-content>
