@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { Firestore, collection, getDocs } from '@angular/fire/firestore';
+import { Firestore, collection, getDocs, deleteDoc, doc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-home',
@@ -32,7 +32,10 @@ export class HomePage implements OnInit {
     try {
       const newsCollection = collection(this.firestore, '1234');
       const newsSnapshot = await getDocs(newsCollection);
-      this.noticias = newsSnapshot.docs.map(doc => doc.data());
+      this.noticias =newsSnapshot.docs.map(doc => ({
+        id: doc.id,  // Añade el ID del documento
+        ...doc.data()  // Spread operator para incluir todos los demás datos
+      })); 
       await loading.dismiss();
     } catch (error) {
       await loading.dismiss();
@@ -103,4 +106,54 @@ export class HomePage implements OnInit {
 
     await alert.present();
   }
+
+  async eliminarNoticia(noticia: any) {
+      const alert = await this.alertController.create({
+        header: 'Eliminar Noticia de Tránsito',
+        message: '¿Estás seguro de que deseas eliminar esta noticia?',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel'
+          },
+          {
+            text: 'Eliminar',
+            handler: async () => {
+              const loading = await this.loadingController.create({
+                message: 'Eliminando noticia...'
+              });
+              await loading.present();
+    
+              try {
+                //Elimina la noticia de tránsito
+             
+                const entidadRef = doc(this.firestore, '1234', noticia.id);
+                await deleteDoc(entidadRef);
+        
+                await loading.dismiss();
+                const successAlert = await this.alertController.create({
+                  header: 'Éxito',
+                  message: 'Noticia eliminada correctamente',
+                  buttons: ['OK']
+                });
+                await successAlert.present();
+    
+                // Recargar las entidades después de eliminar
+                this.loadNews();
+              } catch (error) {
+                await loading.dismiss();
+                const errorAlert = await this.alertController.create({
+                  header: 'Error',
+                  message: 'Hubo un error al eliminar la noticia de tránsito',
+                  buttons: ['OK']
+                });
+                await errorAlert.present();
+              }
+            }
+          }
+        ]
+      });
+    
+      await alert.present();
+    }
 }

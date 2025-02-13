@@ -4,11 +4,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button (click)="createNews()">
-        <ion-icon name="add-circle-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
@@ -29,9 +25,18 @@
       </ion-thumbnail>
       <ion-label>
         <h2>{{ noticia.title }}</h2>
-        <p>{{ noticia.date.toDate() | date }}</p>
+        <p>{{ noticia.date ? (noticia.date.toDate() | date) : 'Fecha no disponible' }}</p>
         <p>{{ noticia.content }}</p>
       </ion-label>
+      <ion-button color="danger" (click)="eliminarNoticia(noticia)">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
     </ion-item>
   </ion-list>
+    <!-- Botón flotante para agregar más entidades -->
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button color="success" (click)="createNews()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
 </ion-content>
