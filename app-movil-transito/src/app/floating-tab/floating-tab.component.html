@@ -1,0 +1,10 @@
+<div class="floating-tab" *ngIf="isVisible">
+  <ion-card (click)="hideTab()">
+    <ion-card-header>
+      <ion-card-title>🚨 Alerta de Tránsito</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ currentMessage }}</p>
+    </ion-card-content>
+  </ion-card>
+</div>

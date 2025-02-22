@@ -1,5 +1,4 @@
 <ion-app>
-  <!-- Menú lateral -->
   <ion-menu side="start" menuId="first" contentId="main-content">
     <ion-header>
       <ion-toolbar color="primary">
@@ -13,7 +12,7 @@
           <ion-icon name="car-outline" slot="start"></ion-icon>
           <ion-label>Principal</ion-label>
         </ion-item>
-        <!-- TOCA CREAR LOS DEMAS COMPONENTES QUE PIDEN  -->
+
         <ion-item lines="none" routerLink="/codigo-transito" routerDirection="root">
           <ion-icon name="book-outline" slot="start"></ion-icon>
           <ion-label>Código de tránsito</ion-label>
@@ -38,16 +37,18 @@
           <ion-icon name="business-outline" slot="start"></ion-icon>
           <ion-label>Entidades de tránsito</ion-label>
         </ion-item>
-    
+
         <ion-item lines="none" routerLink="/configuracion" routerDirection="root">
           <ion-icon name="settings-outline" slot="start"></ion-icon>
           <ion-label>Configuración</ion-label>
         </ion-item>
-
       </ion-list>
     </ion-content>
   </ion-menu>
 
-  <!-- Contenido principal de la aplicación -->
   <ion-router-outlet id="main-content"></ion-router-outlet>
+
+  <!-- Pestaña Flotante -->
+  <app-floating-tab></app-floating-tab>
+
 </ion-app>

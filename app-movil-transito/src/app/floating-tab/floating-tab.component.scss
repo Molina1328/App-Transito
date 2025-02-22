@@ -1,0 +1,15 @@
+.floating-tab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 320px;
+    z-index: 1000;
+    animation: fadeIn 0.5s ease;
+  }
+  
+  ion-card {
+    cursor: pointer;
+    background-color: #fff3cd;
+    border-left: 5px solid #ffa502;
+  }
+  

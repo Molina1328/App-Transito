@@ -12,9 +12,12 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { getMessaging, provideMessaging } from '@angular/fire/messaging';
 import { getStorage, provideStorage } from '@angular/fire/storage';
-
+import { FloatingTabComponent } from './floating-tab/floating-tab.component';
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,FloatingTabComponent],
+  exports: [
+    FloatingTabComponent
+  ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
