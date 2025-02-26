@@ -93,14 +93,19 @@ export class HomePage implements OnInit {
                 'av. amazonas': ['Av. República', 'Av. Colón', 'Av. Naciones Unidas'],
                 'av. patria': ['Av. 12 de Octubre', 'Av. 10 de Agosto', 'Av. 6 de Diciembre'],
                 'av. gonzález suárez': ['Av. 12 de Octubre', 'Av. Orellana', 'Av. Colón'],
-                'av. mariscal sucre': ['Av. La Prensa', 'Av. Occidental', 'Av. América']
+                'av. mariscal sucre': ['Av. La Prensa', 'Av. Occidental', 'Av. América'],
+                'autopista general rumiñahui': ['Av. Río Amazonas', 'Av. General Enríquez'],
+                'avenida general enríquez sector sangolquí': ['Bulevar Santa Clara'],
+                'avenida general enríquez sector selva alegre': ['Av. Luis Cordero', 'Vía Selva Alegre – Alangasí'],
+                'avenida ilaló': ['Av. General Enríquez', 'Av. Luis Cordero', 'Ruta por Selva Alegre'],
+                'calle pichincha y ascázubi': ['Calle Venezuela', 'Calle García Moreno', 'Av. Abdon Calderón'],
+                'avenida general enríquez y calle luis cordero': ['Av. Abdon Calderón', 'Calle García Moreno', 'Bulevar Santa Clara'],
+                'avenida general rumiñahui dirección a e35': ['Av Río Samora y Calle Betania'],
+                'troncal de la sierra E20': ['Av. Los Shyris', 'Calle Samborondón'],
+                'ruta viva': ['Av. E35', 'Av. 2 de agosto e Inter Valles'],
+                'avenida mariana de jesús': ['Agustín Miranda', 'Calle Avelina Lasso'],
               };
-
-
               const lowerTitle = data.title.trim().toLowerCase();
-
-
-
               // 🔎 Detectar palabra clave y vía
               const matchedKeyword = keywords.find(keyword => lowerTitle.includes(keyword));
               const matchedVia = Object.keys(vias).find(via => lowerTitle.includes(via));
