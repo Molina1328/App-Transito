@@ -8,9 +8,11 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <ion-list>
     <ion-item *ngFor="let codigo of codigos">
+      <ion-thumbnail slot="start" *ngIf="codigo.imageUrl">
+        <img [src]="codigo.imageUrl" alt="Imagen de código">
+      </ion-thumbnail>
       <ion-label>
         <h2>{{ codigo.title }}</h2>
         <p>{{ codigo.date ? (codigo.date.toDate() | date) : 'Fecha no disponible' }}</p>
@@ -28,5 +30,4 @@
       <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
 </ion-content>

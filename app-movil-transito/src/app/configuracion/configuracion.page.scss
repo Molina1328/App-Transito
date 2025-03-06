@@ -1,0 +1,28 @@
+.edit-image-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    --border-radius: 50%;
+    --background: rgba(var(--ion-color-primary-rgb), 0.9);
+    --color: white;
+  }
+  
+  ion-list {
+    background: transparent;
+  }
+  
+  ion-item {
+    --padding-start: 0;
+  }
+  
+  ion-button[expand="block"] {
+    margin-top: 20px;
+  }
+  
+  ion-icon {
+    color: var(--ion-color-primary);
+  }

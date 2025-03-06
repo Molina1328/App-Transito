@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, User, onAuthStateChanged } from '@angular/fire/auth';
 import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -50,36 +49,37 @@ export class AuthService {
     });
   }
   // Crear noticia en la colección '1234'
-  createNews(news: { title: string, content: string, date: Date }) {
+  createNews(news: { title: string, content: string, date: Date, imageUrl?: string | null }) {
     return addDoc(this.newsCollectionHome, news);
   }
 
   // Crear noticia en la colección 'UserTransito'
-  createNewsUserTransito(news: { title: string, content: string, date: Date }) {
+  createNewsUserTransito(news: { title: string, content: string, date: Date, imageUrl?: string | null }) {
     return addDoc(this.newsCollectionUserTransito, news);
   }
 
   // Crear noticia en la colección 'CodigoTransito'
-  createNewsCodigoTransito(news: { title: string, content: string, date: Date }) {
+  createNewsCodigoTransito(news: { title: string, content: string, date: Date, imageUrl?: string | null }) {
     return addDoc(this.newsCollectionCodigoTransito, news);
   }
 
   // Crear noticia en la colección 'EntidadTrans'
-  createNewsEntidadTrans(news: { title: string, content: string, date: Date }) {
+  createNewsEntidadTrans(news: { title: string, content: string, date: Date, imageUrl?: string | null }) {
     return addDoc(this.newsCollectionEntidadTrans, news);
   }
 
   // Crear noticia en la colección 'InfraccionTranst'
-  createNewsInfraccionTranst(news: { title: string, content: string, date: Date }) {
+  createNewsInfraccionTranst(news: { title: string, content: string, date: Date, imageUrl?: string | null }) {
     return addDoc(this.newsCollectionInfraccionTranst, news);
   }
   // Crear noticia en la colección 'RecursoTransito'
-  createNewsRecursoTransito(news: { title: string, content: string, date: Date }) {
+  createNewsRecursoTransito(news: { title: string, content: string, date: Date, imageUrl?: string | null }) {
     return addDoc(this.newsCollectionRecursoTransito, news);
   }
 
   // Crear noticia en la colección 'SenalTranst'
-  createNewsSenalTranst(news: { title: string, content: string, date: Date }) {
+  createNewsSenalTranst(news: { title: string, content: string, date: Date, imageUrl?: string | null }) {
     return addDoc(this.newsCollectionSenalTranst, news);
   }
+  
 }

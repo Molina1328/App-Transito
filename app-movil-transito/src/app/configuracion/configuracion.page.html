@@ -12,13 +12,62 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
   <ion-card *ngIf="user">
     <ion-card-header>
-      <ion-card-title>Datos del Usuario</ion-card-title>
+      <ion-card-subtitle>Perfil de Usuario</ion-card-subtitle>
+      <ion-card-title>{{ userProfile.displayName || 'Usuario' }}</ion-card-title>
     </ion-card-header>
+
     <ion-card-content>
-      <p><strong>Email:</strong> {{ user.email }}</p>
+      <div class="profile-image-container">
+        <div class="profile-image">
+          <img *ngIf="userProfile.profileImageUrl" [src]="userProfile.profileImageUrl" alt="Foto de perfil">
+          <ion-icon *ngIf="!userProfile.profileImageUrl" name="person-circle" class="default-avatar"></ion-icon>
+          <ion-button fill="clear" class="edit-image-button" (click)="selectProfileImage()">
+            <ion-icon name="camera"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+
+      <ion-list lines="none">
+        <ion-item>
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>Correo electrónico</h3>
+            <p>{{ user.email }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>Nombre</h3>
+            <p>{{ userProfile.displayName || 'No especificado' }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="call-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>Teléfono</h3>
+            <p>{{ userProfile.phoneNumber || 'No especificado' }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="location-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>Dirección</h3>
+            <p>{{ userProfile.address || 'No especificada' }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <ion-button expand="block" (click)="editUserProfile()" color="primary">
+        <ion-icon name="create-outline" slot="start"></ion-icon>
+        Editar Perfil
+      </ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>

@@ -11,6 +11,9 @@
 
   <ion-list>
     <ion-item *ngFor="let entidad of entidades">
+      <ion-thumbnail slot="start" *ngIf="entidad.imageUrl">
+        <img [src]="entidad.imageUrl" alt="Imagen de entidad">
+      </ion-thumbnail>
       <ion-label>
         <h2>{{ entidad.title }}</h2>
         <p>{{ entidad.date ? (entidad.date.toDate() | date) : 'Fecha no disponible' }}</p>

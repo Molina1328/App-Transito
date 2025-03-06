@@ -8,9 +8,11 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <ion-list>
     <ion-item *ngFor="let recurso of recursos">
+      <ion-thumbnail slot="start" *ngIf="recurso.imageUrl">
+        <img [src]="recurso.imageUrl" alt="Imagen de recurso">
+      </ion-thumbnail>
       <ion-label>
         <h2>{{ recurso.title }}</h2>
         <p>{{ recurso.date ? (recurso.date.toDate() | date) : 'Fecha no disponible' }}</p>
@@ -22,11 +24,10 @@
     </ion-item>
   </ion-list>
 
-  <!-- Botón flotante para agregar más entidades -->
+  <!-- Botón flotante para agregar más recursos -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="success" (click)="agregarRecursos()">
       <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
 </ion-content>

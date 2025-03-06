@@ -8,9 +8,11 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <ion-list>
     <ion-item *ngFor="let senal of senales">
+      <ion-thumbnail slot="start" *ngIf="senal.imageUrl">
+        <img [src]="senal.imageUrl" alt="Imagen de señal">
+      </ion-thumbnail>
       <ion-label>
         <h2>{{ senal.title }}</h2>
         <p>{{ senal.date ? (senal.date.toDate() | date) : 'Fecha no disponible' }}</p>
@@ -28,5 +30,4 @@
       <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
 </ion-content>

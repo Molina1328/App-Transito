@@ -8,9 +8,11 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <ion-list>
     <ion-item *ngFor="let infraccion of infracciones">
+      <ion-thumbnail slot="start" *ngIf="infraccion.imageUrl">
+        <img [src]="infraccion.imageUrl" alt="Imagen de infracción">
+      </ion-thumbnail>
       <ion-label>
         <h2>{{ infraccion.title }}</h2>
         <p>{{ infraccion.date ? (infraccion.date.toDate() | date) : 'Fecha no disponible' }}</p>
@@ -22,11 +24,10 @@
     </ion-item>
   </ion-list>
 
-  <!-- Botón flotante para agregar más entidades -->
+  <!-- Botón flotante para agregar más infracciones -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="success" (click)="agregarInfracciones()">
       <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
 </ion-content>

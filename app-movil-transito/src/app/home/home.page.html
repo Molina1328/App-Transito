@@ -4,14 +4,11 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
   <ion-segment [(ngModel)]="selectedSegment">
-   
     <ion-segment-button value="noticias">
       <ion-label>Noticias</ion-label>
     </ion-segment-button>
@@ -19,8 +16,8 @@
 
   <ion-list>
     <ion-item *ngFor="let noticia of noticias">
-      <ion-thumbnail slot="start">
-       <!--<img [src]="noticia.imageUrl">-->
+      <ion-thumbnail slot="start" *ngIf="noticia.imageUrl">
+        <img [src]="noticia.imageUrl" alt="Imagen de noticia">
       </ion-thumbnail>
       <ion-label>
         <h2>{{ noticia.title }}</h2>
@@ -32,10 +29,11 @@
       </ion-button>
     </ion-item>
   </ion-list>
-    <!-- Botón flotante para agregar más entidades -->
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button color="success" (click)="createNews()">
-        <ion-icon name="add-outline"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
+  
+  <!-- Botón flotante para agregar más entidades -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="success" (click)="createNews()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

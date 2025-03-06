@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { Firestore, collection, getDocs, doc,deleteDoc } from '@angular/fire/firestore';
+import { Firestore, collection, getDocs, doc, deleteDoc } from '@angular/fire/firestore';
+import { Storage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from '@angular/fire/storage';
+
 @Component({
   selector: 'app-entidades-transito',
   templateUrl: './entidades-transito.page.html',
@@ -10,17 +12,18 @@ import { Firestore, collection, getDocs, doc,deleteDoc } from '@angular/fire/fir
 export class EntidadesTransitoPage implements OnInit {
   selectedSegment: string = 'todo';
   entidades: any[] = [];
+  selectedImage: File | null = null;
 
   constructor(
     private readonly authService: AuthService,
     private readonly alertController: AlertController,
     private readonly loadingController: LoadingController,
-    private readonly firestore: Firestore
+    private readonly firestore: Firestore,
+    private readonly storage: Storage // Inyección del servicio Storage
   ) {}
 
   ngOnInit() {
     this.loadNews();
-
   }
 
   async loadNews() {
@@ -69,36 +72,9 @@ export class EntidadesTransitoPage implements OnInit {
           role: 'cancel'
         },
         {
-          text: 'Crear',
+          text: 'Siguiente',
           handler: async (data) => {
-            const loading = await this.loadingController.create({
-              message: 'Creando entidad...'
-            });
-            await loading.present();
-
-            try {
-              await this.authService.createNewsEntidadTrans({
-                title: data.title,
-                content: data.content,
-                date: new Date()
-              });
-              await loading.dismiss();
-              const successAlert = await this.alertController.create({
-                header: 'Éxito',
-                message: 'Entidad creada correctamente',
-                buttons: ['OK']
-              });
-              await successAlert.present();
-              this.loadNews(); // Recargar las entidades después de crear una nueva
-            } catch (error) {
-              await loading.dismiss();
-              const errorAlert = await this.alertController.create({
-                header: 'Error',
-                message: 'Hubo un error al crear la entidad de tránsito',
-                buttons: ['OK']
-              });
-              await errorAlert.present();
-            }
+            this.openImageSelector(data);
           }
         }
       ]
@@ -106,6 +82,114 @@ export class EntidadesTransitoPage implements OnInit {
 
     await alert.present();
   }
+
+  async openImageSelector(entityData: any) {
+    const alert = await this.alertController.create({
+      header: 'Añadir Imagen',
+      message: '¿Deseas añadir una imagen a esta entidad?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            this.saveEntity(entityData);
+          }
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.onchange = (event: any) => {
+              const file = event.target.files[0];
+              if (file) {
+                this.selectedImage = file;
+                this.saveEntity(entityData);
+              }
+            };
+            fileInput.click();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async saveEntity(entityData: any) {
+    const loading = await this.loadingController.create({
+      message: 'Guardando entidad...'
+    });
+    await loading.present();
+
+    try {
+      let imageUrl: string | null = null;
+      
+      // Si hay una imagen seleccionada, súbela a Firebase Storage
+      if (this.selectedImage) {
+        imageUrl = await this.uploadImage(this.selectedImage);
+      }
+
+      // Crear la entidad con o sin imagen
+      await this.authService.createNewsEntidadTrans({
+        title: entityData.title,
+        content: entityData.content,
+        date: new Date(),
+        imageUrl: imageUrl
+      });
+
+      this.selectedImage = null;
+      await loading.dismiss();
+      
+      const successAlert = await this.alertController.create({
+        header: 'Éxito',
+        message: 'Entidad creada correctamente',
+        buttons: ['OK']
+      });
+      await successAlert.present();
+      this.loadNews(); // Recargar entidades
+    } catch (error) {
+      await loading.dismiss();
+      const errorAlert = await this.alertController.create({
+        header: 'Error',
+        message: 'Hubo un error al crear la entidad',
+        buttons: ['OK']
+      });
+      await errorAlert.present();
+    }
+  }
+
+  // Método para subir imagen a Firebase Storage
+  async uploadImage(file: File): Promise<string> {
+    try {
+      const fileName = new Date().getTime() + '_' + file.name;
+      const storageRef = ref(this.storage, `entity_images/${fileName}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      
+      return new Promise<string>((resolve, reject) => {
+        uploadTask.on(
+          'state_changed',
+          (snapshot) => {
+            // Opcionalmente puedes usar esto para mostrar el progreso
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+          },
+          (error) => {
+            reject(error);
+          },
+          async () => {
+            // Cuando la carga se completa, obtener URL
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            resolve(downloadURL);
+          }
+        );
+      });
+    } catch (error) {
+      console.error('Error al subir imagen:', error);
+      throw error;
+    }
+  }
+
   async eliminarEntidad(entidad: any) {
     const alert = await this.alertController.create({
       header: 'Eliminar Entidad de Tránsito',
@@ -124,8 +208,20 @@ export class EntidadesTransitoPage implements OnInit {
             await loading.present();
   
             try {
-              //Elimina la entidad de tránsito
-           
+              // Elimina la imagen de Firebase Storage si existe
+              if (entidad.imageUrl) {
+                try {
+                  // Obtener la referencia de la URL
+                  const imageRef = ref(this.storage, entidad.imageUrl);
+                  // Eliminar el archivo
+                  await deleteObject(imageRef);
+                } catch (error) {
+                  console.error('Error al eliminar imagen:', error);
+                  // Continuar con la eliminación de la entidad aunque falle la eliminación de la imagen
+                }
+              }
+
+              // Elimina la entidad de Firestore
               const entidadRef = doc(this.firestore, 'entidadTrans', entidad.id);
               await deleteDoc(entidadRef);
       
@@ -155,6 +251,4 @@ export class EntidadesTransitoPage implements OnInit {
   
     await alert.present();
   }
-  
-  
 }
